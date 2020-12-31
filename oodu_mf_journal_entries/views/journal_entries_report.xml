@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!--Report-->
+    <template id="journal_entries_report_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="doc.with_context({'lang': 'en_US'})"/>
+            <div class="oe_structure"/>
+<!--             <t t-foreach="docs" t-as="o">-->
+                <div class="page" style="page-break-before: always; margin-bottom:100px; padding-top:30px">
+                    <div class="text-center" name="company_address">
+                        <div style="font-size:24px;" class="text-center">
+                            <b>
+                                <span t-field="o.company_id.name"/>
+                            </b>
+                        </div>
+                        <div class="text-center">
+                            <t t-if="o.company_id.street">
+                                <span t-field="o.company_id.street"/>,
+                            </t>
+                        </div>
+                        <div class="text-center">
+                            <t t-if="o.company_id.street2">
+                                <span t-field="o.company_id.street2"/>,
+                            </t>
+                            <t t-if="o.company_id.city">
+                                <span t-field="o.company_id.city"/>-
+                            </t>
+                            <t t-if="o.company_id.zip">
+                                <span t-field="o.company_id.zip"/>
+                            </t>
+                        </div>
+                        <div class="text-center">
+                            State Name : <span t-field="o.company_id.state_id.name"/>, Code :
+                            <span style="font-size:15px;" t-field="o.company_id.state_id.code"/>
+                        </div>
+                        <div class="text-center">
+                            E-Mail :
+                            <span t-field="o.company_id.email"/>
+                        </div>
+                    </div>
+                    <div style="font-size:28px;" class="text-center">
+                        <span t-esc="o.journal_id.name"/>
+                    </div>
+                    <div style="font-size:33px;">
+                        <t t-esc="o.name"/>
+                    </div>
+                    <br/>
+                    <div id="informations" class="row">
+                        <div class="col-2">
+                            <strong>Date</strong>
+                            <p class="m-0" t-field="o.date"/>
+                        </div>
+                        <!-- <div class="col-2" t-if="o.date_post_direct_journal">
+                            <strong>Posted Date</strong>
+                            <p class="m-0" t-field="o.date_post_direct_journal"/>
+                        </div> -->
+                        <!-- <div class="col-2" t-if="o.date_post_from_invoice">
+                            <strong>Posted Date</strong>
+                            <p class="m-0" t-field="o.date_post_from_invoice"/>
+                        </div> -->
+                       <!--  <div t-if="o.mode_type" class="col-2">
+                            <strong>Mode Type</strong>
+                            <p class="m-0" t-field="o.mode_type"/>
+                        </div> -->
+                        <div t-if="o.ref" class="col-2">
+                            <strong>Reference</strong>
+                            <p class="m-0" t-field="o.ref"/>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div style="font-size:24px;">Journal Items</div>
+                    <table class="table table-bordered" border="3" style="font-size:16px;">
+                        <thead class="text-center">
+
+                            <tr>
+                                <th>Account</th>
+                                <th>Partner</th>
+                                <th>Label</th>
+                                <!-- <th>Analytic Account</th> -->
+                                <!-- <th>Analytic Tags</th> -->
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr t-foreach="o.line_ids" t-as="l">
+                                <td>
+                                    <span t-esc="l.account_id.code"/>
+                                    <span t-esc="l.account_id.name"/>
+
+                                </td>
+
+
+                                <td width="210px">
+
+                                    <span t-esc="l.partner_id.name"/>
+                                </td>
+                                <td>
+
+                                    <span t-esc="l.name"/>
+
+                                </td>
+                               <!--  <td>
+
+                                    <span t-esc="l.analytic_account_id.name"/>
+
+                                </td>
+                                <td>
+                                    <t t-foreach="l.analytic_tag_ids" t-as="analytic">
+                                        <span t-esc="analytic.name"/>
+                                    </t>
+                                </td> -->
+
+                                <td>
+                                   <span t-esc="l.debit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td class="text-right">
+                                   <span t-esc="l.credit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                 <td style="border-right:hidden; ">
+
+                                </td>
+                                <td style="border-left:hidden; border-right:hidden; ">
+
+                                </td>
+
+                               <!--  <td style="border-left:hidden; border-right:hidden; ">
+
+                                </td> -->
+                               <!--  <td style="border-left:hidden; border-right:hidden; ">
+
+                                </td> -->
+                                <td class="text-right" style="font-size:16px; padding-right:50px;">
+                                    <b>Total</b>
+                                </td>
+
+                                <td style="font-size:16px;">
+
+                                    <b>
+                                        <span t-esc="sum([l.debit for l in o.line_ids])" t-options='{"widget": "float", "precision": 2}'/>
+
+                                    </b>
+                                </td>
+                                <td colspan="7" class="text-right" style="font-size:16px;">
+                                    <b>
+                                         <span t-esc="sum([l.credit for l in o.line_ids])" t-options='{"widget": "float", "precision": 2}'/>
+                                    </b>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                   <!--  <tr>
+                        <div t-if="o.mode_type in ('RTGS','NEFT','DCR')" style="font-size:16px;">
+                            <b>Bank Name:</b>
+                            <span t-esc="o.acc_number_id.bank_id.name"/>
+                        </div>
+                        <div t-if="o.mode_type in ('RTGS','NEFT','DCR')" style="font-size:16px;">
+                            <b>Bank Account No:</b>
+                            <span t-esc="o.acc_number_id.acc_number"/>
+                        </div>
+                        <div t-if="o.mode_type in ('RTGS','NEFT','DCR')" width="200px" style="border-left:hidden; border-right:hidden; font-size:16px;">
+                            <b>IFSC:</b>
+                            <span t-esc="o.bank_ifc"/>
+                        </div>
+                        <div t-if="o.partner_name" width="200px" style="border-left:hidden; border-right:hidden; font-size:16px;">
+                            <b>Payee Name:</b>
+                            <span t-esc="o.partner_name"/>
+                        </div>
+                        <div t-if="o.crossing" width="200px" style="border-left:hidden; border-right:hidden; font-size:16px;">
+                            <b>Crossing:</b>
+                            <span t-esc="o.crossing"/>
+                        </div>
+                    </tr>
+                    <br/> -->
+                    <div t-if='o.narration'>
+                        <strong>Narration :</strong>
+                        <span t-field='o.narration'></span>
+                    </div>
+                    <br/>
+                    <!-- <div t-if='o.reason'>
+                        <strong>Reason :</strong>
+                        <span t-field='o.reason'></span>
+                    </div> -->
+                    <div class="row" t-if="o.journal_id.type == 'cash'">
+
+                        <div class="col-3">
+                            <br/>
+                            <br/>
+                            <b>Receiver's Signature</b>
+                        </div>
+
+                    </div>
+
+					<!-- <![CDATA[&nbsp;]]>
+                    <div class="row" t-if="o.journal_id.type == 'cash'">
+                        <div class="col-4">
+                            <br/>
+                            <br/>
+                            <b>Prepared by</b><br/>
+                            <span t-field='o.prepared_by_id'/>
+                        </div>
+                        <div class="col-4 text-center">
+                            <br/>
+                            <br/>
+                            <b>Verified by</b><br/>
+                            <span t-field='o.verified_by_id'/>
+                        </div>
+                        <div class="col-4 text-right">
+                            <br/>
+                            <br/>
+                            <span><b>Authorised Signatory</b></span>
+                        </div>
+                    </div> -->
+
+                   <!-- <div class="row" t-if="o.journal_id.type == 'sale' or o.journal_id.type == 'purchase' or o.journal_id.type == 'general'">
+                        <div class="col-4">
+                            <br/>
+                            <br/>
+                            <b>Prepared by</b><br/>
+                            <span t-field='o.prepared_by_id'/>
+                        </div>
+                        <div class="col-4 text-center">
+                            <br/>
+                            <br/>
+                            <b>Verified by</b><br/>
+                            <span t-field='o.verified_by_id'/>
+                        </div>
+
+                    </div> -->
+
+
+                    <!-- <div class="row" t-if="o.journal_id.type == 'bank'">
+                        <div class="col-4">
+                            <br/>
+                            <br/>
+                            <b>Prepared by</b><br/>
+                            <span t-field='o.prepared_by_id'/>
+                        </div>
+                        <div class="col-4 text-center">
+                            <br/>
+                            <br/>
+                            <b>Verified by</b><br/>
+                            <span t-field='o.verified_by_id'/>
+                        </div>
+                        <div class="col-4 text-right">
+                            <br/>
+                            <br/>
+                            <span t-if="not o.check_sign"><b>Authorised Signatory</b></span>
+                            <span t-if="o.check_sign"><b>Authorised Signatory</b></span>
+                        </div>
+                    </div> -->
+            </div>
+<!--             </t>-->
+        </t>
+    </template>
+                 
+    <!--TEMPLATE [JOURNAL ENTRIES REPORT]-->
+    <template id="journal_entries_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="oodu_mf_journal_entries.journal_entries_report_template"/>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_journal_entry" model="report.paperformat">
+            <field name="name">Journal Entry</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">28</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">40</field>
+            <field name="dpi">90</field>
+    </record>
+
+    <report id="action_journal_entries_report"
+            model="account.move"
+            string="Journal Entries"
+            report_type="qweb-pdf"
+            name="oodu_mf_journal_entries.journal_entries_report"
+            file="oodu_mf_journal_entries.journal_entries_report"
+            paperformat="oodu_mf_journal_entries.paperformat_journal_entry"
+            attachment_use="True"
+    />
+
+   <!--  <record id="view_account_bank_statement_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.report.form</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <button name="check_confirm_bank" position="after">
+                <button name="print_journal_entries" string="Print Journal Entries" type="object" help="Print in Pdf"/>
+            </button>
+        </field>
+
+    </record> -->
+
+</odoo>

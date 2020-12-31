@@ -1,0 +1,1700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_cancel_manager">
+        <field name="name">Access</field>
+        <field name="description">Access</field>
+        <!-- <field name="sequence">10</field> -->
+    </record>
+
+    <record id="group_access_remove_user" model="res.groups">
+        <field name="name">Disble</field>
+        <field name="category_id" ref="module_category_cancel_manager"/>
+    </record>
+
+<!-- Partner View -->
+
+    <record id="hide_view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="hide_res_partner_kanban_view" model="ir.ui.view">
+        <field name="name">res.partner.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Sale Order View -->
+
+    <record id="hide_view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="hide_view_sale_order_kanban" model="ir.ui.view">
+        <field name="name">sale.order.kanban</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Quotation View -->
+
+    <record id="hide_view_quotation_tree_with_onboarding" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Product View -->
+
+    <record id="hide_product_template_kanban_view" model="ir.ui.view">
+        <field name="name">product.template.kanban</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_template_tree_view" model="ir.ui.view">
+        <field name="name">product.template.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Product Variant -->
+
+    <record id="hide_product_product_tree_view" model="ir.ui.view">
+        <field name="name">product.product.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_kanban_view" model="ir.ui.view">
+        <field name="name">product.product.kanban</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_kanban_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Sale Team -->
+
+    <record id="hide_crm_team_view_tree" model="ir.ui.view">
+        <field name="name">crm.team.tree</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_crm_team_view_form" model="ir.ui.view">
+        <field name="name">crm.team.form</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Quotation Templates -->
+
+    <record id="hide_sale_order_template_view_tree" model="ir.ui.view">
+        <field name="name">sale.order.template</field>
+        <field name="model">sale.order.template</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_sale_order_template_view_form" model="ir.ui.view">
+        <field name="name">sale.order.template</field>
+        <field name="model">sale.order.template</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Attributes -->
+    
+    <record id="hide_attribute_tree_view" model="ir.ui.view">
+        <field name="name">product.attribute</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.attribute_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_attribute_view_form" model="ir.ui.view">
+        <field name="name">product.attribute</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Activity Types -->
+    
+    <record id="hide_mail_activity_type_view_tree" model="ir.ui.view">
+        <field name="name">mail.activity.type</field>
+        <field name="model">mail.activity.type</field>
+        <field name="inherit_id" ref="mail.mail_activity_type_view_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_mail_activity_type_view_form" model="ir.ui.view">
+        <field name="name">mail.activity.type</field>
+        <field name="model">mail.activity.type</field>
+        <field name="inherit_id" ref="mail.mail_activity_type_view_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Requests for Quotation -->
+
+    <record id="hide_purchase_order_tree" model="ir.ui.view">
+        <field name="name">purchase.order</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase.order</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_purchase_order_kanban" model="ir.ui.view">
+        <field name="name">purchase.order</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Purchase Orders -->
+    
+    <record id="hide_purchase_order_view_tree" model="ir.ui.view">
+        <field name="name">purchase.order</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Vendor Pricelists -->
+
+    <record id="hide_product_supplierinfo_tree_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_supplierinfo_form_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_supplierinfo_view_kanban" model="ir.ui.view">
+        <field name="name">product.supplierinfo</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_view_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Product Categories -->
+    
+    <record id="hide_product_category_list_view" model="ir.ui.view">
+        <field name="name">product.category</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_list_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_category_form_view" model="ir.ui.view">
+        <field name="name">product.category</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Units of Measure -->
+
+    <record id="hide_product_uom_tree_view" model="ir.ui.view">
+        <field name="name">uom.uom</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_uom_form_view" model="ir.ui.view">
+        <field name="name">uom.uom</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Units of Measure Categories -->
+
+    <record id="hide_product_uom_categ_tree_view" model="ir.ui.view">
+        <field name="name">uom.category</field>
+        <field name="model">uom.category</field>
+        <field name="inherit_id" ref="uom.product_uom_categ_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_product_uom_categ_form_view" model="ir.ui.view">
+        <field name="name">uom.category</field>
+        <field name="model">uom.category</field>
+        <field name="inherit_id" ref="uom.product_uom_categ_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Transfers -->
+
+    <record id="hide_vpicktree" model="ir.ui.view">
+        <field name="name">stock.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_stock_picking_kanban" model="ir.ui.view">
+        <field name="name">stock.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.stock_picking_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Inventory Adjustments -->
+    
+    <record id="hide_view_inventory_tree" model="ir.ui.view">
+        <field name="name">stock.inventory</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_stock_inventory_kanban" model="ir.ui.view">
+        <field name="name">stock.inventory</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_stock_inventory_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_inventory_form" model="ir.ui.view">
+        <field name="name">stock.inventory</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Scrap Orders -->
+
+    <record id="hide_stock_scrap_tree_view" model="ir.ui.view">
+        <field name="name">stock.scrap</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_stock_scrap_form_view" model="ir.ui.view">
+        <field name="name">stock.scrap</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_stock_scrap_view_kanban" model="ir.ui.view">
+        <field name="name">stock.scrap</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_view_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Reordering Rules -->
+
+    <record id="hide_view_warehouse_orderpoint_tree" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_stock_warehouse_orderpoint_kanban" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_stock_warehouse_orderpoint_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_warehouse_orderpoint_form" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Lots/Serial Numbers -->
+
+    <record id="hide_view_production_lot_tree" model="ir.ui.view">
+        <field name="name">stock.production.lot</field>
+        <field name="model">stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_production_lot_form" model="ir.ui.view">
+        <field name="name">stock.production.lot</field>
+        <field name="model">stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Warehouses -->
+
+    <record id="hide_view_warehouse" model="ir.ui.view">
+        <field name="name">stock.warehouse</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Operations Types -->
+
+    <record id="hide_view_warehouse" model="ir.ui.view">
+        <field name="name">stock.picking.type</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_picking_type_form" model="ir.ui.view">
+        <field name="name">stock.picking.type</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Barcode Nomenclatures -->
+
+    <record id="hide_view_barcode_nomenclature_tree" model="ir.ui.view">
+        <field name="name">barcode.nomenclature</field>
+        <field name="model">barcode.nomenclature</field>
+        <field name="inherit_id" ref="barcodes.view_barcode_nomenclature_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_barcode_nomenclature_form" model="ir.ui.view">
+        <field name="name">barcode.nomenclature</field>
+        <field name="model">barcode.nomenclature</field>
+        <field name="inherit_id" ref="barcodes.view_barcode_nomenclature_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Invoices -->
+
+    <record id="hide_view_invoice_tree" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_move_form" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_move_kanban" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Payments -->
+
+    <record id="hide_view_account_payment_tree" model="ir.ui.view">
+        <field name="name">account.payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_payment_kanban" model="ir.ui.view">
+        <field name="name">account.payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_payment_form" model="ir.ui.view">
+        <field name="name">account.payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Products -->
+
+    <record id="hide_product_template_view_tree" model="ir.ui.view">
+        <field name="name">product.template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="account.product_template_view_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Journal Entries -->
+
+    <record id="hide_view_move_tree" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_move_tree" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Journal Items -->
+
+
+    <record id="hide_view_move_line_form" model="ir.ui.view">
+        <field name="name">account.move.line</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_account_move_line_view_kanban" model="ir.ui.view">
+        <field name="name">account.move.line</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.account_move_line_view_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Automatic Transfers -->
+
+    <record id="hide_view_transfer_model_tree" model="ir.ui.view">
+        <field name="name">account.transfer.model</field>
+        <field name="model">account.transfer.model</field>
+        <field name="inherit_id" ref="account_auto_transfer.view_transfer_model_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_transfer_model_form" model="ir.ui.view">
+        <field name="name">account.transfer.model</field>
+        <field name="model">account.transfer.model</field>
+        <field name="inherit_id" ref="account_auto_transfer.view_transfer_model_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Assets -->
+    
+    <record id="hide_view_account_asset_purchase_tree" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_purchase_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_asset_kanban" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_asset_form" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Deferred Revenues -->
+
+    <record id="hide_view_account_asset_sale_tree" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_sale_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Deferred Expenses -->
+
+    <record id="hide_view_account_asset_expense_tree" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_expense_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Payment Terms -->
+
+    <record id="hide_view_payment_term_tree" model="ir.ui.view">
+        <field name="name">account.payment.term</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_payment_term_form" model="ir.ui.view">
+        <field name="name">account.payment.term</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_payment_term_kanban" model="ir.ui.view">
+        <field name="name">account.payment.term</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_account_payment_term_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Taxes -->
+
+    <record id="hide_view_tax_tree" model="ir.ui.view">
+        <field name="name">account.tax</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_tax_kanban" model="ir.ui.view">
+        <field name="name">account.tax</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_tax_form" model="ir.ui.view">
+        <field name="name">account.tax</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Fiscal Positions -->
+
+    <record id="hide_view_account_position_tree" model="ir.ui.view">
+        <field name="name">account.fiscal.position</field>
+        <field name="model">account.fiscal.position</field>
+        <field name="inherit_id" ref="account.view_account_position_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_position_form" model="ir.ui.view">
+        <field name="name">account.fiscal.position</field>
+        <field name="model">account.fiscal.position</field>
+        <field name="inherit_id" ref="account.view_account_position_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Incoterms -->
+
+    <record id="hide_view_incoterms_tree" model="ir.ui.view">
+        <field name="name">account.incoterms</field>
+        <field name="model">account.incoterms</field>
+        <field name="inherit_id" ref="account.view_incoterms_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_account_incoterms_form" model="ir.ui.view">
+        <field name="name">account.incoterms</field>
+        <field name="model">account.incoterms</field>
+        <field name="inherit_id" ref="account.account_incoterms_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Journals -->
+
+    <record id="hide_view_account_journal_tree" model="ir.ui.view">
+        <field name="name">account.journal</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_journal_form" model="ir.ui.view">
+        <field name="name">account.journal</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_account_journal_view_kanban" model="ir.ui.view">
+        <field name="name">account.journal</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_view_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Payment Follow-ups -->
+
+    <record id="hide_view_account_followup_followup_line_tree" model="ir.ui.view">
+        <field name="name">account_followup.followup.line</field>
+        <field name="model">account_followup.followup.line</field>
+        <field name="inherit_id" ref="account_followup.view_account_followup_followup_line_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_followup_followup_line_form" model="ir.ui.view">
+        <field name="name">account_followup.followup.line</field>
+        <field name="model">account_followup.followup.line</field>
+        <field name="inherit_id" ref="account_followup.view_account_followup_followup_line_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_followup_followup_line_form" model="ir.ui.view">
+        <field name="name">account_followup.followup.line</field>
+        <field name="model">account_followup.followup.line</field>
+        <field name="inherit_id" ref="account_followup.view_account_followup_followup_line_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Bank Accounts -->
+
+    <record id="hide_view_account_bank_journal_tree" model="ir.ui.view">
+        <field name="name">account.journal</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_bank_journal_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_bank_journal_form" model="ir.ui.view">
+        <field name="name">account.journal</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_bank_journal_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Payment Acquirers -->
+
+    <record id="hide_acquirer_kanban" model="ir.ui.view">
+        <field name="name">payment.acquirer</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_kanban"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_acquirer_list" model="ir.ui.view">
+        <field name="name">payment.acquirer</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_list"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_acquirer_form" model="ir.ui.view">
+        <field name="name">payment.acquirer</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Saved Payment Data -->
+
+    <record id="hide_acquirer_form" model="ir.ui.view">
+        <field name="name">payment.token</field>
+        <field name="model">payment.token</field>
+        <field name="inherit_id" ref="payment.payment_token_tree_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_payment_token_form_view" model="ir.ui.view">
+        <field name="name">payment.token</field>
+        <field name="model">payment.token</field>
+        <field name="inherit_id" ref="payment.payment_token_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Payment Icons -->
+
+    <record id="hide_payment_icon_form_view" model="ir.ui.view">
+        <field name="name">payment.icon</field>
+        <field name="model">payment.icon</field>
+        <field name="inherit_id" ref="payment.payment_icon_form_view"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Chart of Accounts -->
+
+    <record id="hide_view_account_list" model="ir.ui.view">
+        <field name="name">account.account</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_form" model="ir.ui.view">
+        <field name="name">account.account</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Journal Groups -->
+
+    <record id="hide_view_account_journal_group_tree" model="ir.ui.view">
+        <field name="name">account.journal.group</field>
+        <field name="model">account.journal.group</field>
+        <field name="inherit_id" ref="account.view_account_journal_group_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_journal_group_form" model="ir.ui.view">
+        <field name="name">account.journal.group</field>
+        <field name="model">account.journal.group</field>
+        <field name="inherit_id" ref="account.view_account_journal_group_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Reconciliation Models -->
+
+    <record id="hide_view_account_reconcile_model_tree" model="ir.ui.view">
+        <field name="name">account.reconcile.model</field>
+        <field name="model">account.reconcile.model</field>
+        <field name="inherit_id" ref="account.view_account_reconcile_model_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_reconcile_model_form" model="ir.ui.view">
+        <field name="name">account.reconcile.model</field>
+        <field name="model">account.reconcile.model</field>
+        <field name="inherit_id" ref="account.view_account_reconcile_model_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Account Tags -->
+
+    <record id="hide_account_tag_view_tree" model="ir.ui.view">
+        <field name="name">account.account.tag</field>
+        <field name="model">account.account.tag</field>
+        <field name="inherit_id" ref="account.account_tag_view_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_account_tag_view_form" model="ir.ui.view">
+        <field name="name">account.account.tag</field>
+        <field name="model">account.account.tag</field>
+        <field name="inherit_id" ref="account.account_tag_view_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Account Groups -->
+
+    <record id="hide_view_account_group_tree" model="ir.ui.view">
+        <field name="name">account.group</field>
+        <field name="model">account.group</field>
+        <field name="inherit_id" ref="account.view_account_group_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_group_form" model="ir.ui.view">
+        <field name="name">account.group</field>
+        <field name="model">account.group</field>
+        <field name="inherit_id" ref="account.view_account_group_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Asset Models -->
+
+    <record id="hide_view_account_asset_model_purchase_tree" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_model_purchase_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_asset_form" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Deferred Revenue Models -->
+
+    <record id="hide_view_account_asset_model_sale_tree" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_model_sale_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Deferred Expense Models -->
+
+    <record id="hide_view_account_asset_model_expense_tree" model="ir.ui.view">
+        <field name="name">account.asset</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_model_expense_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Configure Tax Report -->
+    
+    <record id="hide_account_tax_report_line_tree" model="ir.ui.view">
+        <field name="name">account.tax.report.line</field>
+        <field name="model">account.tax.report.line</field>
+        <field name="inherit_id" ref="account.account_tax_report_line_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_account_tax_report_line_form" model="ir.ui.view">
+        <field name="name">account.tax.report.line</field>
+        <field name="model">account.tax.report.line</field>
+        <field name="inherit_id" ref="account.account_tax_report_line_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Financial Reports -->
+
+    <record id="hide_view_account_financial_report_tree" model="ir.ui.view">
+        <field name="name">account.financial.html.report</field>
+        <field name="model">account.financial.html.report</field>
+        <field name="inherit_id" ref="account_reports.view_account_financial_report_tree"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hide_view_account_financial_report_form" model="ir.ui.view">
+        <field name="name">account.financial.html.report</field>
+        <field name="model">account.financial.html.report</field>
+        <field name="inherit_id" ref="account_reports.view_account_financial_report_form"/>
+        <field name="groups_id" eval="[(4,ref('oi_master_extend.group_access_remove_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

@@ -3,8 +3,10 @@
 
 {
     'name': 'Restrict Stock Button',
-    'version': '1',
+    'version': '13.0.1.0',
     'category': 'Inventory',
+    'author' : 'Oodu Implementers Pvt Ltd',
+    'website': 'www.odooimplementers.com'
     'summary': 'Restrict ',
     'description': """
 This module shows check availability and validate button to the enabled users.

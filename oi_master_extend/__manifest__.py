@@ -8,7 +8,9 @@
     "website": "http://www.odooimplementers.com",
     'license': 'AGPL-3',
     "depends": ['purchase','sale','base','sale_management','stock','account'],
-    "data": ['views/master_views.xml'
+    "data": [
+    'security/button_security.xml',
+    'views/master_views.xml'
 
     ],
     "application": False,

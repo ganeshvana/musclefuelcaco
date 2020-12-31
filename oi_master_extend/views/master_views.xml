@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record model="ir.module.category" id="module_category_cancel_manager">
+    <!-- <record model="ir.module.category" id="module_category_cancel_manager">
         <field name="name">Access</field>
         <field name="description">Access</field>
-        <!-- <field name="sequence">10</field> -->
     </record>
 
     <record id="group_access_remove_user" model="res.groups">
         <field name="name">Disble</field>
         <field name="category_id" ref="module_category_cancel_manager"/>
-    </record>
+    </record> -->
 
 <!-- Partner View -->
 

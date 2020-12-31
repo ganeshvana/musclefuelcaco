@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cmrl_view_move_form_inherit" model="ir.ui.view">
+        <field name="name">cmrl.account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="journal_id" position="after">
+			<field name="date_post_direct_journal" attrs="{'invisible': [('journal_id', 'in', (10,11))]}"/>
+            <field name="date_post_from_invoice" attrs="{'invisible': [('journal_id', 'not in', (10,11))]}"/>
+                <field name="prepared_by_id" readonly="True"/>
+                <field name="verified_by_id" readonly="True"/>
+            </field>
+            <xpath expr="//page[1]/field/tree/field[@name='name']" position="after">
+                <field name="product_id"/>
+            </xpath>
+            <xpath expr="//group/group[1]/field[@name='ref']" position="replace">
+                <field name="ref" attrs="{'required': [('id', '==', False)], 'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath>
+            <xpath expr="//notebook/page[1]/field[@name='narration']" position="replace">
+                <field name="narration" colspan="4" placeholder="Add an internal note..." nolabel="1" height="50" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath>
+            <field name="ref" position="after">
+                <field name="bank_ifc" attrs="{'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER'))],'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER'))]}"/>
+                <field name="acc_number_id" options="{'no_open':True}" attrs="{'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER'))],'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER'))]}"/>
+                <field name="mode_type"/>
+                <field name="partner_name" attrs="{'invisible': [('mode_type', '!=', 'CHEQUE')]}"/>
+                <field name="crossing" attrs="{'invisible': [('mode_type', '!=', 'CHEQUE')]}"/>
+            </field>
+            <field name="verified_by_id" position="after">
+                <field name="reason"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="cmr_inherit_vendor_bill" model="ir.ui.view">
+        <field name="name">cmrl.inherit.vendor.bill</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page/group/group/field[@name='date']" position="replace">
+                <field name="date"/>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[2]/group/group[1]/field[@name='account_id']" position="after">
+                <field name="account_analytic_id" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}"/>
+                <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="cmr_inherit_customer_invoice" model="ir.ui.view">
+        <field name="name">cmrl.inherit.customer.invoice</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page/group/group/field[@name='account_id']" position="after">
+                <field name="date"/>
+            </xpath>
+             <xpath expr="//form/sheet/notebook/page[2]/group/group[1]/field[@name='account_id']" position="after">
+                <field name="account_analytic_id" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}"/>
+                <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="cmrl_analytic_invoice_create" model="ir.ui.view">
+        <field name="name">cmrl.analytic.invoice.create</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('oi_cmrl_de_print_journal_entries.group_analytic_create_disable')])]"/>
+        <field name="arch" type="xml">
+            <field name="account_analytic_id" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>
+            </field>
+        </field>
+    </record> -->
+
+
+    <record id="cmrl_view_payment_form_inherit" model="ir.ui.view">
+        <field name="name">cmrl.account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <field name="CMP_portal" position="after">
+                <!-- <field name="acc_number_id" attrs="{'required': [('mode_type', 'not in', ('CHEQUE','SWIFT','ONLINE_TRANSFER')),('payment_type', 'not in', ('transfer'))],'readonly':[('state','!=','draft')],'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER'))]}"  domain="[('partner_id', '=', partner_id),('bank_id.active','=',True)]"/> -->
+                <field name="acc_number_id" attrs="{'required': [('mode_type', 'not in', ('CHEQUE','SWIFT','ONLINE_TRANSFER')),('payment_type', 'not in', ('transfer'))],'readonly':[('state','!=','draft')],'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER'))]}"  domain="[('partner_id', '=', commercial_partner_id)]" context="{'default_partner_id': commercial_partner_id}"/>
+                <field name="bank_ifc" attrs="{'required': [('mode_type', 'not in', ('CHEQUE','SWIFT','ONLINE_TRANSFER')),('payment_type', 'not in', ('transfer'))],'invisible': [('mode_type', 'in', ('CHEQUE','SWIFT','ONLINE_TRANSFER')),('payment_type','!=','transfer')]}" />
+                <field name="user_id" readonly="True" attrs="{'readonly':[('state','!=','draft')]}"/>
+                <field name="company_id" invisible="1"/>
+                <field name="commercial_partner_id" invisible="1"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="acc_payable" attrs="{'readonly':[('state','!=','draft')],'required': [('mode_type', 'not in', ('CHEQUE','SWIFT','ONLINE_TRANSFER')),('payment_type', 'not in', ('transfer'))]}" />
+            </field>
+           
+        </field>
+    </record>
+
+    <record id="cmrl_payment_form_inherit" model="ir.ui.view">
+        <field name="name">cmrl.account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('oi_billing_access.group_customer_master_edit_action_remove')])]"/>
+        <field name="arch" type="xml">
+            <field name="acc_number_id" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="account_payment_form_inherit_payment" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//group[2]' position="inside">
+                <field name="reason" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_reversal_inherit" model="ir.ui.view">
+        <field name="name">account.move.reversal.inherit</field>
+        <field name="model">account.move.reversal</field>
+        <field name="inherit_id" ref="account.view_account_move_reversal"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/group/field[@name='journal_id']" position="after">
+                <field name="prepared_by_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="cmrl_account_invoice_move_view_line">
+        <field name="name">cmrl.account.move.lines</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('oi_cmrl_de_print_journal_entries.group_journal_entry_product_id_disable')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[1]/field/tree/field[@name='product_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create':True,}</attribute>
+            </xpath>
+            <xpath expr="//page[1]/field/tree/field[@name='analytic_account_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>
+            </xpath>
+            <xpath expr="//page[1]/field/tree/field[@name='analytic_tag_ids']" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>
+            </xpath>
+<!--            <xpath expr="//page[1]/field/tree/field[@name='partner_id']" position="attributes">-->
+<!--                <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>-->
+<!--            </xpath>-->
+        </field>
+     </record>
+
+<!--            <record model="ir.ui.view" id="view_account_payment_field_access">-->
+<!--            <field name="name">view.account.payment.inherit</field>-->
+<!--            <field name="model">account.payment</field>-->
+<!--            <field name="inherit_id" ref="account.view_account_payment_form" />-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="acc_number_id" position="attributes">-->
+<!--                    <attribute name="domain">[('active','=',True)]</attribute>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+</odoo>

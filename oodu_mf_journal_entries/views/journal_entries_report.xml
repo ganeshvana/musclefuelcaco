@@ -279,7 +279,7 @@
     </template>
 
 
-    <record id="paperformat_journal_entry" model="report.paperformat">
+    <!-- <record id="paperformat_journal_entry" model="report.paperformat">
             <field name="name">Journal Entry</field>
             <field name="default" eval="True" />
             <field name="format">A4</field>
@@ -293,7 +293,7 @@
             <field name="header_line" eval="False" />
             <field name="header_spacing">40</field>
             <field name="dpi">90</field>
-    </record>
+    </record> -->
 
     <report id="action_journal_entries_report"
             model="account.move"
@@ -301,7 +301,6 @@
             report_type="qweb-pdf"
             name="oodu_mf_journal_entries.journal_entries_report"
             file="oodu_mf_journal_entries.journal_entries_report"
-            paperformat="oodu_mf_journal_entries.paperformat_journal_entry"
             attachment_use="True"
     />
 

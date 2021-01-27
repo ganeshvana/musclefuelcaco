@@ -3,12 +3,14 @@
 
     <!--Report-->
     <template id="journal_entries_report_template">
-        <t t-call="web.basic_layout">
+        <t t-call="web.external_layout">
+        <!-- <t t-call="web.basic_layout"> -->
+
             <t t-set="o" t-value="doc.with_context({'lang': 'en_US'})"/>
             <div class="oe_structure"/>
 <!--             <t t-foreach="docs" t-as="o">-->
                 <div class="page" style="page-break-before: always; margin-bottom:100px; padding-top:30px">
-                    <div class="text-center" name="company_address">
+                    <!-- <div class="text-center" name="company_address">
                         <div style="font-size:24px;" class="text-center">
                             <b>
                                 <span t-field="o.company_id.name"/>
@@ -38,27 +40,28 @@
                             E-Mail :
                             <span t-field="o.company_id.email"/>
                         </div>
-                    </div>
-                    <div style="font-size:28px;" class="text-center">
+                    </div> -->
+                    <!-- <div style="font-size:28px;" class="text-center">
                         <span t-esc="o.journal_id.name"/>
-                    </div>
+                    </div> -->
                     <div style="font-size:33px;">
                         <t t-esc="o.name"/>
                     </div>
                     <br/>
                     <div id="informations" class="row">
+                        
+                        <div class="col-2" t-if="o.journal_id.name">
+                            <strong>Journal</strong>
+                            <p class="m-0" t-field="o.journal_id.name"/>
+                        </div>
                         <div class="col-2">
                             <strong>Date</strong>
                             <p class="m-0" t-field="o.date"/>
                         </div>
-                        <!-- <div class="col-2" t-if="o.date_post_direct_journal">
-                            <strong>Posted Date</strong>
-                            <p class="m-0" t-field="o.date_post_direct_journal"/>
-                        </div> -->
-                        <!-- <div class="col-2" t-if="o.date_post_from_invoice">
-                            <strong>Posted Date</strong>
-                            <p class="m-0" t-field="o.date_post_from_invoice"/>
-                        </div> -->
+                        <div class="col-2" t-if="o.partner_id">
+                            <strong>Partner</strong>
+                            <p class="m-0" t-field="o.partner_id.name"/>
+                        </div>
                        <!--  <div t-if="o.mode_type" class="col-2">
                             <strong>Mode Type</strong>
                             <p class="m-0" t-field="o.mode_type"/>
@@ -202,26 +205,43 @@
 
                     </div>
 
-					<!-- <![CDATA[&nbsp;]]>
-                    <div class="row" t-if="o.journal_id.type == 'cash'">
-                        <div class="col-4">
+					<![CDATA[&nbsp;]]>
+                     <div class="row">
+                        <div class="col-4 text-center">
                             <br/>
                             <br/>
                             <b>Prepared by</b><br/>
-                            <span t-field='o.prepared_by_id'/>
+                            <!-- <span t-field='o.prepared_by_id'/> -->
                         </div>
                         <div class="col-4 text-center">
                             <br/>
                             <br/>
-                            <b>Verified by</b><br/>
-                            <span t-field='o.verified_by_id'/>
+                            <b>Checked by</b><br/>
+                            <!-- <span t-field='o.verified_by_id'/> -->
                         </div>
-                        <div class="col-4 text-right">
+                        <div class="col-4 text-center">
                             <br/>
                             <br/>
-                            <span><b>Authorised Signatory</b></span>
+                            <b>Approved by</b><br/>
+                            <!-- <span><b>Authorised Signatory</b></span> -->
                         </div>
-                    </div> -->
+                    </div>
+                    <table class="table table-bordered">
+                        <tr style="height: 60px">
+                            <td>
+                            </td>
+                            <div style="width:15px"></div>
+                           <!--  <td style="border:hidden">
+                            </td> -->
+                            <td>
+                            </td>
+                            <!-- <td style="border:hidden">
+                            
+                            </td> -->
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
 
                    <!-- <div class="row" t-if="o.journal_id.type == 'sale' or o.journal_id.type == 'purchase' or o.journal_id.type == 'general'">
                         <div class="col-4">
@@ -275,7 +295,7 @@
     </template>
 
 
-    <record id="paperformat_journal_entry" model="report.paperformat">
+    <!-- <record id="paperformat_journal_entry" model="report.paperformat">
             <field name="name">Journal Entry</field>
             <field name="default" eval="True" />
             <field name="format">A4</field>
@@ -289,7 +309,7 @@
             <field name="header_line" eval="False" />
             <field name="header_spacing">40</field>
             <field name="dpi">90</field>
-    </record>
+    </record> -->
 
     <report id="action_journal_entries_report"
             model="account.move"
@@ -297,7 +317,6 @@
             report_type="qweb-pdf"
             name="oodu_mf_journal_entries.journal_entries_report"
             file="oodu_mf_journal_entries.journal_entries_report"
-            paperformat="oodu_mf_journal_entries.paperformat_journal_entry"
             attachment_use="True"
     />
 

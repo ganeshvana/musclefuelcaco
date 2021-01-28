@@ -2,8 +2,10 @@
 
 import base64
 import datetime
+import json
 import logging
 import os
+import requests
 import time
 import traceback
 import subprocess
@@ -12,7 +14,6 @@ from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-
 
 _logger = logging.getLogger(__name__)
 
@@ -125,6 +126,8 @@ class SendWAMessage(models.TransientModel):
     @api.model
     def default_get(self, fields):
         result = super(SendWAMessage, self).default_get(fields)
+        if self.env.context.get('from_rpc'):
+            return result
         active_model = self.env.context.get('active_model')
         Attachment = self.env['ir.attachment']
         receipt_data = self.env.context.get('receipt_data')
@@ -363,8 +366,10 @@ class SendWAMessage(models.TransientModel):
                     pass
 
             msg_sent = True
+            return {'msg_sent': True}
         except Exception as e:
             msg_sent = False
+            return {'msg_sent': False}
 
     def get_qr_img(self):
         data = self.send_whatsapp_msgs(number=False, msg=False, get_qr=True)
@@ -389,7 +394,11 @@ class SendWAMessage(models.TransientModel):
         global options
         global dir_path
         options[unique_user] = webdriver.ChromeOptions()
-        options[unique_user].add_argument('--user-data-dir=' + dir_path + '/.user_data_uid_' + str(unique_user))
+        if self.env.context.get('from_rpc'):    
+            caller_user_id = self.env.context.get('caller_user_id') 
+            options[unique_user].add_argument('--user-data-dir=' + dir_path + '/.user_data_uid_' + str(unique_user) + '_' + str(caller_user_id))    
+        else:
+            options[unique_user].add_argument('--user-data-dir=' + dir_path + '/.user_data_uid_' + str(unique_user))
         options[unique_user].add_argument('--headless')
         options[unique_user].add_argument('--no-sandbox')
         options[unique_user].add_argument('--window-size=1366,768')
@@ -404,26 +413,10 @@ class SendWAMessage(models.TransientModel):
         capabilities = DesiredCapabilities.CHROME.copy()
         capabilities['acceptSslCerts'] = True
         capabilities['acceptInsecureCerts'] = True
-        try:
-            e_path = dir_path + '/chromedriver_79'
-            chromium_version = subprocess.check_output(['chromium-browser', '--version'], stderr=subprocess.STDOUT)
-            chromium_version = chromium_version and chromium_version.split()[1]
-            if chromium_version.startswith(b'79.'):
-                e_path = dir_path + '/chromedriver_79'
-            elif chromium_version.startswith(b'84.'):
-                e_path = dir_path + '/chromedriver_84'
-        except (subprocess.CalledProcessError, Exception):
-            e_path = dir_path + '/chromedriver_79'
-            chrome_version = subprocess.check_output(['google-chrome', '--version'], stderr=subprocess.STDOUT)
-            chrome_version = chrome_version and chrome_version.split()[2]
-            if chrome_version.startswith(b'79.'):
-                e_path = dir_path + '/chromedriver_79'
-            elif chrome_version.startswith(b'84.'):
-                e_path = dir_path + '/chromedriver_84'
 
         # For portable chrome
-        #e_path = dir_path + '/chromedriver_79'
-        #options[unique_user].binary_location = dir_path + '/chrome/chrome'
+        e_path = dir_path + '/chromedriver_79'
+        options[unique_user].binary_location = dir_path + '/chrome/chrome'
         driver[unique_user] = webdriver.Chrome(executable_path=e_path, chrome_options=options.get(unique_user), desired_capabilities=capabilities)
         wait[unique_user] = WebDriverWait(driver.get(self.unique_user), 10)
         wait5[unique_user] = WebDriverWait(driver.get(self.unique_user), 5)
@@ -439,6 +432,101 @@ class SendWAMessage(models.TransientModel):
             pass
 
     def action_send_msg(self):
+        request_url = 'http://136.244.101.162:8069/whatsapp/rpc?db=wp_api'
+
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'text/plain'
+        }
+        try:
+            partners = {}
+            count = 1
+            for p in self.partner_ids:
+                pat = {}
+                pat['name'] = p.name
+                pat['country'] = p.country_id.name
+                pat['mobile'] = p.mobile
+                partners[count] = pat
+                count += 1
+            attachments = {}
+            count = 1
+            for a in self.attachment_ids:
+                att = {}
+                att['name'] = a.name
+                att['datas'] = a.datas.decode('utf-8')
+                att['type'] = a.type
+                att['res_model'] = a.res_model
+                att['res_id'] = a.res_id
+                attachments[count] = att
+                count += 1
+            data = {
+                "params": {
+                    'msg': self.message,
+                    'partners': partners,
+                    'attachments': attachments,
+                    'dbuuid': self.unique_user,
+                    'user_id': self.env.uid,
+                    'ctx': json.dumps(self.env.context.copy()),
+                }
+            }
+            req = requests.post(request_url, data=json.dumps(data), headers=headers)
+            if req.ok:
+                json_result = json.loads(req.text)
+                json_result = json.loads(json_result.get('result'))
+                if json_result.get('notLoggedIn'):
+                    img_data = json_result.get('qr_image')
+                    context = dict(self.env.context or {})
+                    context.update(qr_image=img_data, wiz_id=self.id)
+                    view_id = self.env.ref('whatsapp_integration.whatsapp_qr_view_form').id
+
+                    return {
+                        'name':_("Scan WhatsApp QR Code"),
+                        'view_mode': 'form',
+                        'view_id': view_id,
+                        'view_type': 'form',
+                        'res_model': 'whatsapp.scan.qr',
+                        'type': 'ir.actions.act_window',
+                        'target': 'new',
+                        'context': context,
+                    }
+                elif not json_result.get('msg_sent'):
+                    view_id = self.env.ref('whatsapp_integration.whatsapp_retry_msg_view_form').id
+                    context = dict(self.env.context or {})
+                    context.update(wiz_id=self.id)
+                    return {
+                        'name':_("Retry to send"),
+                        'view_mode': 'form',
+                        'view_id': view_id,
+                        'view_type': 'form',
+                        'res_model': 'whatsapp.retry.msg',
+                        'type': 'ir.actions.act_window',
+                        'target': 'new',
+                        'context': context,
+                    }
+                if json_result.get('msg_sent'):
+                    active_model = self.env.context.get('active_model')
+                    res_id = self.env.context.get('active_id')
+                    rec = self.env[active_model].browse(res_id)
+                    if active_model == 'sale.order':
+                        rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Quotation') if rec.state in ('draft', 'sent', 'cancel') else _('Sales Order'), rec.name))
+                        if rec.state == 'draft':
+                            rec.write({'state': 'sent'})
+                    elif active_model == 'account.invoice':
+                        rec.message_post(body=_("Invoice %s sent via WhatsApp") % (rec.number))
+                    elif active_model == 'purchase.order':
+                        rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Request for Quotation') if rec.state in ['draft', 'sent'] else _('Purchase Order'), rec.name))
+                        if rec.state == 'draft':
+                            rec.write({'state': 'sent'})
+                    elif active_model == 'stock.picking':
+                        rec.message_post(body=_("Delivery Order %s sent via WhatsApp") % (rec.name))
+                    elif active_model == 'account.payment':
+                        rec.message_post(body=_("Payment %s sent via WhatsApp") % (rec.name))
+            else:
+                _logger.warning(_('Error in request, status code: ' + str(req.status_code)))
+        except requests.HTTPError:
+            _logger.warning(_('Error opening url'))
+
+    def action_send_msg1(self):
         if not _silenium_lib_imported:
             raise UserError('Silenium is not installed. Please install it.')
         global is_session_open
@@ -463,6 +551,8 @@ class SendWAMessage(models.TransientModel):
                     img_data = resp.get('qr_image')
                     view_id = self.env.ref('whatsapp_integration.whatsapp_qr_view_form').id
                     context = dict(self.env.context or {})
+                    if self.env.context.get('from_rpc'):
+                        return {'notLoggedIn': True, 'qr_image': img_data}
                     context.update(qr_image=img_data, wiz_id=self.id)
                     if self.env.context.get('from_pos'):
                         return {
@@ -496,6 +586,8 @@ class SendWAMessage(models.TransientModel):
                     view_id = self.env.ref('whatsapp_integration.whatsapp_qr_view_form').id
                     context = dict(self.env.context or {})
                     context.update(qr_image=img_data, wiz_id=self.id)
+                    if self.env.context.get('from_rpc'):
+                        return {'notLoggedIn': True, 'qr_image': img_data}
                     if self.env.context.get('from_pos'):
                         return {
                             'name': 'Scan WhatsApp QR Code',
@@ -510,18 +602,51 @@ class SendWAMessage(models.TransientModel):
                             'target': 'new',
                             'context': context,
                         }
-        if msg_sent:
+        # if msg_sent:
+        #     active_model = self.env.context.get('active_model')
+        #     if not active_model:
+        #         return True
+        #     res_id = self.env.context.get('active_id')
+        #     rec = self.env[active_model].browse(res_id)
+        #     if active_model == 'sale.order':
+        #         rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Quotation') if rec.state in ('draft', 'sent', 'cancel') else _('Sales Order'), rec.name))
+        #         if rec.state == 'draft':
+        #             rec.write({'state': 'sent'})
+        #     elif active_model == 'account.move':
+        #         rec.message_post(body=_("Invoice %s sent via WhatsApp") % (rec.name))
+        #     elif active_model == 'purchase.order':
+        #         rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Request for Quotation') if rec.state in ['draft', 'sent'] else _('Purchase Order'), rec.name))
+        #         if rec.state == 'draft':
+        #             rec.write({'state': 'sent'})
+        #     elif active_model == 'stock.picking':
+        #         rec.message_post(body=_("Delivery Order %s sent via WhatsApp") % (rec.name))
+        #     elif active_model == 'account.payment':
+        #         rec.message_post(body=_("Payment %s sent via WhatsApp") % (rec.name))
+        # else:
+        #     view_id = self.env.ref('whatsapp_integration.whatsapp_retry_msg_view_form').id
+        #     context = dict(self.env.context or {})
+        #     context.update(wiz_id=self.id)
+        #     return {
+        #             'name':_("Retry to send"),
+        #             'view_mode': 'form',
+        #             'view_id': view_id,
+        #             'res_model': 'whatsapp.retry.msg',
+        #             'type': 'ir.actions.act_window',
+        #             'target': 'new',
+        #             'context': context,
+        #         }
+
+        # return True
+        if msg_sent and not self.env.context.get('from_rpc'):
             active_model = self.env.context.get('active_model')
-            if not active_model:
-                return True
             res_id = self.env.context.get('active_id')
             rec = self.env[active_model].browse(res_id)
             if active_model == 'sale.order':
                 rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Quotation') if rec.state in ('draft', 'sent', 'cancel') else _('Sales Order'), rec.name))
                 if rec.state == 'draft':
                     rec.write({'state': 'sent'})
-            elif active_model == 'account.move':
-                rec.message_post(body=_("Invoice %s sent via WhatsApp") % (rec.name))
+            elif active_model == 'account.invoice':
+                rec.message_post(body=_("Invoice %s sent via WhatsApp") % (rec.number))
             elif active_model == 'purchase.order':
                 rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Request for Quotation') if rec.state in ['draft', 'sent'] else _('Purchase Order'), rec.name))
                 if rec.state == 'draft':
@@ -530,6 +655,10 @@ class SendWAMessage(models.TransientModel):
                 rec.message_post(body=_("Delivery Order %s sent via WhatsApp") % (rec.name))
             elif active_model == 'account.payment':
                 rec.message_post(body=_("Payment %s sent via WhatsApp") % (rec.name))
+        elif not msg_sent and self.env.context.get('from_rpc'):
+            return {'msg_sent': False}
+        elif msg_sent and self.env.context.get('from_rpc'):
+            return {'msg_sent': True}
         else:
             view_id = self.env.ref('whatsapp_integration.whatsapp_retry_msg_view_form').id
             context = dict(self.env.context or {})
@@ -538,6 +667,7 @@ class SendWAMessage(models.TransientModel):
                     'name':_("Retry to send"),
                     'view_mode': 'form',
                     'view_id': view_id,
+                    'view_type': 'form',
                     'res_model': 'whatsapp.retry.msg',
                     'type': 'ir.actions.act_window',
                     'target': 'new',

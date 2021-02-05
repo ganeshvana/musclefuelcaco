@@ -21,5 +21,5 @@ Send RFQs/Purchase Orders via WhatsApp
     'installable': True,
     'auto_install': False,
     'currency': 'EUR',
-    'price': 30,
+    'price': 50,
 }

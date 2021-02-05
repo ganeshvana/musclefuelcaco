@@ -30,7 +30,7 @@
                     class="btn-lg btn-link mb4 fa fa-whatsapp"
                     aria-label="Send By WhatsApp"
                     title="Send By WhatsApp"
-                    states="purchase"  context="{'send_rfq':False}"/>
+                    states="purchase,done"  context="{'send_rfq':False}"/>
             </xpath>
         </field>
     </record>

@@ -13,8 +13,6 @@ class SendWAMessage(models.TransientModel):
     def default_get(self, fields):
         result = super(SendWAMessage, self).default_get(fields)
         active_model = self.env.context.get('active_model')
-        if not active_model or active_model == 'pos.order':
-            return result
         res_id = self.env.context.get('active_id')
         rec = self.env[active_model].browse(res_id)
         msg = result.get('message', '')

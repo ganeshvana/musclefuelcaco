@@ -394,9 +394,9 @@ class SendWAMessage(models.TransientModel):
         global options
         global dir_path
         options[unique_user] = webdriver.ChromeOptions()
-        if self.env.context.get('from_rpc'):    
-            caller_user_id = self.env.context.get('caller_user_id') 
-            options[unique_user].add_argument('--user-data-dir=' + dir_path + '/.user_data_uid_' + str(unique_user) + '_' + str(caller_user_id))    
+        if self.env.context.get('from_rpc'):
+            caller_user_id = self.env.context.get('caller_user_id')
+            options[unique_user].add_argument('--user-data-dir=' + dir_path + '/.user_data_uid_' + str(unique_user) + '_' + str(caller_user_id))
         else:
             options[unique_user].add_argument('--user-data-dir=' + dir_path + '/.user_data_uid_' + str(unique_user))
         options[unique_user].add_argument('--headless')
@@ -483,7 +483,6 @@ class SendWAMessage(models.TransientModel):
                         'name':_("Scan WhatsApp QR Code"),
                         'view_mode': 'form',
                         'view_id': view_id,
-                        'view_type': 'form',
                         'res_model': 'whatsapp.scan.qr',
                         'type': 'ir.actions.act_window',
                         'target': 'new',
@@ -497,7 +496,6 @@ class SendWAMessage(models.TransientModel):
                         'name':_("Retry to send"),
                         'view_mode': 'form',
                         'view_id': view_id,
-                        'view_type': 'form',
                         'res_model': 'whatsapp.retry.msg',
                         'type': 'ir.actions.act_window',
                         'target': 'new',
@@ -511,7 +509,7 @@ class SendWAMessage(models.TransientModel):
                         rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Quotation') if rec.state in ('draft', 'sent', 'cancel') else _('Sales Order'), rec.name))
                         if rec.state == 'draft':
                             rec.write({'state': 'sent'})
-                    elif active_model == 'account.invoice':
+                    elif active_model == 'account.move':
                         rec.message_post(body=_("Invoice %s sent via WhatsApp") % (rec.number))
                     elif active_model == 'purchase.order':
                         rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Request for Quotation') if rec.state in ['draft', 'sent'] else _('Purchase Order'), rec.name))
@@ -639,13 +637,15 @@ class SendWAMessage(models.TransientModel):
         # return True
         if msg_sent and not self.env.context.get('from_rpc'):
             active_model = self.env.context.get('active_model')
+            if not active_model:
+                return True
             res_id = self.env.context.get('active_id')
             rec = self.env[active_model].browse(res_id)
             if active_model == 'sale.order':
                 rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Quotation') if rec.state in ('draft', 'sent', 'cancel') else _('Sales Order'), rec.name))
                 if rec.state == 'draft':
                     rec.write({'state': 'sent'})
-            elif active_model == 'account.invoice':
+            elif active_model == 'account.move':
                 rec.message_post(body=_("Invoice %s sent via WhatsApp") % (rec.number))
             elif active_model == 'purchase.order':
                 rec.message_post(body=_("%s %s sent via WhatsApp") % (_('Request for Quotation') if rec.state in ['draft', 'sent'] else _('Purchase Order'), rec.name))
@@ -667,7 +667,6 @@ class SendWAMessage(models.TransientModel):
                     'name':_("Retry to send"),
                     'view_mode': 'form',
                     'view_id': view_id,
-                    'view_type': 'form',
                     'res_model': 'whatsapp.retry.msg',
                     'type': 'ir.actions.act_window',
                     'target': 'new',

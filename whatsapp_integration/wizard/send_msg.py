@@ -186,57 +186,57 @@ class SendWAMessage(models.TransientModel):
             phone_numbers = []
             no_phone_partners = []
             if active_model != 'res.partner':
-                is_attachment_exists = Attachment.search([('res_id', '=', res_id), ('name', 'like', res_name + '%'), ('res_model', '=', active_model)], limit=1)
-                if not is_attachment_exists:
-                    attachments = []
-                    if active_model == 'sale.order':
-                        template = self.env.ref('sale.email_template_edi_sale')
-                    elif active_model == 'account.move':
-                        template = self.env.ref('account.email_template_edi_invoice')
-                    elif active_model == 'purchase.order':
-                        if self.env.context.get('send_rfq', False):
-                            template = self.env.ref('purchase.email_template_edi_purchase')
-                        else:
-                            template = self.env.ref('purchase.email_template_edi_purchase_done')
-                    elif active_model == 'stock.picking':
-                        template = self.env.ref('stock.mail_template_data_delivery_confirmation')
-                    elif active_model == 'account.payment':
-                        template = self.env.ref('account.mail_template_data_payment_receipt')
-                    elif active_model == 'pos.order':
-                        if rec.mapped('account_move'):
-                            report = self.env.ref('point_of_sale.pos_invoice_report')
-                            report_service = res_name + '.pdf'
-                        else:
-                            return result
+                # is_attachment_exists = Attachment.search([('res_id', '=', res_id), ('name', 'like', res_name + '%'), ('res_model', '=', active_model)], limit=1)
+                # if not is_attachment_exists:
+                attachments = []
+                if active_model == 'sale.order':
+                    template = self.env.ref('sale.email_template_edi_sale')
+                elif active_model == 'account.move':
+                    template = self.env.ref('account.email_template_edi_invoice')
+                elif active_model == 'purchase.order':
+                    if self.env.context.get('send_rfq', False):
+                        template = self.env.ref('purchase.email_template_edi_purchase')
+                    else:
+                        template = self.env.ref('purchase.email_template_edi_purchase_done')
+                elif active_model == 'stock.picking':
+                    template = self.env.ref('stock.mail_template_data_delivery_confirmation')
+                elif active_model == 'account.payment':
+                    template = self.env.ref('account.mail_template_data_payment_receipt')
+                elif active_model == 'pos.order':
+                    if rec.mapped('account_move'):
+                        report = self.env.ref('point_of_sale.pos_invoice_report')
+                        report_service = res_name + '.pdf'
+                    else:
+                        return result
 
-                    if active_model != 'pos.order':
-                        report = template.report_template
-                        report_service = report.report_name
+                if active_model != 'pos.order':
+                    report = template.report_template
+                    report_service = report.report_name
 
-                    if report.report_type not in ['qweb-html', 'qweb-pdf']:
-                        raise UserError(_('Unsupported report type %s found.') % report.report_type)
-                    res, format = report.render_qweb_pdf([res_id])
-                    res = base64.b64encode(res)
-                    if not res_name:
-                        res_name = 'report.' + report_service
-                    ext = "." + format
-                    if not res_name.endswith(ext):
-                        res_name += ext
-                    attachments.append((res_name, res))
-                    attachment_ids = []
-                    for attachment in attachments:
-                        attachment_data = {
-                            'name': attachment[0],
-                            'datas': attachment[1],
-                            'type': 'binary',
-                            'res_model': active_model,
-                            'res_id': res_id,
-                        }
-                        attachment_ids.append(Attachment.create(attachment_data).id)
-                    if attachment_ids:
-                        result['attachment_ids'] = [(6, 0, attachment_ids)]
-                else:
-                    result['attachment_ids'] = [(6, 0, [is_attachment_exists.id])]
+                if report.report_type not in ['qweb-html', 'qweb-pdf']:
+                    raise UserError(_('Unsupported report type %s found.') % report.report_type)
+                res, format = report.render_qweb_pdf([res_id])
+                res = base64.b64encode(res)
+                if not res_name:
+                    res_name = 'report.' + report_service
+                ext = "." + format
+                if not res_name.endswith(ext):
+                    res_name += ext
+                attachments.append((res_name, res))
+                attachment_ids = []
+                for attachment in attachments:
+                    attachment_data = {
+                        'name': attachment[0],
+                        'datas': attachment[1],
+                        'type': 'binary',
+                        'res_model': active_model,
+                        'res_id': res_id,
+                    }
+                    attachment_ids.append(Attachment.create(attachment_data).id)
+                if attachment_ids:
+                    result['attachment_ids'] = [(6, 0, attachment_ids)]
+                # else:
+                #     result['attachment_ids'] = [(6, 0, [is_attachment_exists.id])]
 
             for partner in partners:
                 number = self._msg_sanitization(partner, self.env.context.get('field_name') or 'mobile')

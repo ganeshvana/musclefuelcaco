@@ -3,7 +3,7 @@
     <data noupdate="0">
         <record model="ir.config_parameter" id="musclefuel_api_url">
             <field name="key">musclefuel.api_url</field>
-            <field name="value">http://musclefuel-kw.com/testV1/ws</field>
+            <field name="value">http://musclefuel-kw.com/musclefuel/ws/</field>
         </record>
     
     </data>

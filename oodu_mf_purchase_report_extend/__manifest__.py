@@ -10,7 +10,7 @@
     'depends': ['base', 'purchase'],
     'data': [
     'views/purchase_report_extend.xml',
-    'views/stock_view.xml'
+    # 'views/stock_view.xml'
     ],
     'installable': True,
     'application': True,

@@ -45,4 +45,12 @@ class accoount_invoice_line(models.Model):
     price_unit = fields.Float(string='Price', required=True, digits=dp.get_precision('Purchase Price'))
 
 
+class stock_picking(models.Model):
+    _inherit = "stock.picking"
+
+    date_done = fields.Datetime('Date of Transfer', copy=False, readonly=False, help="Date at which the transfer has been processed or cancelled.")
+
+
+
+
    

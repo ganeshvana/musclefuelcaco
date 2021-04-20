@@ -7,10 +7,10 @@
     'author': 'Oodu Implementers Pvt Ltd.',
     'description': """This module contains additional changes in Purchase Report""",
     'category': 'purchase',
-    'depends': ['base', 'purchase'],
+    'depends': ['base', 'purchase', 'stock_account'],
     'data': [
     'views/purchase_report_extend.xml',
-    # 'views/stock_view.xml'
+    'views/stock_view.xml'
     ],
     'installable': True,
     'application': True,

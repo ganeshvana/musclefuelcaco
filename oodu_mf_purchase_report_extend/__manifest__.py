@@ -9,7 +9,9 @@
     'category': 'purchase',
     'depends': ['base', 'purchase'],
     'data': [
-    'views/purchase_report_extend.xml'
+    'views/purchase_report_extend.xml',
+    'views/stock_view.xml'
+
     ],
     'installable': True,
     'application': True,

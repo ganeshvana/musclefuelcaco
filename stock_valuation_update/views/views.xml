@@ -1,0 +1,33 @@
+<odoo>
+  <data>
+  	<record model="ir.ui.view" id="view_stock_val_update_form">
+        <field name="name">stock.val.update.form</field>
+        <field name="model">stock.val.update</field>
+        <field name="arch" type="xml">
+            <form>
+            	
+            	<group>
+            		<group>
+            			<field name="date" required="1"/>
+            		</group>
+            		<group></group>
+            	</group>
+                <footer>
+                	<button type="object" class="oe_highlight" string="Update" name="update_date"/>
+                	<button string="Discard" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>            
+        </field>
+    </record>
+    
+    <record id="action_stock_val_update" model="ir.actions.act_window">
+        <field name="name">Update Date</field>
+        <field name="res_model">stock.val.update</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="stock_valuation_update.view_stock_val_update_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock_account.model_stock_valuation_layer"/>
+        <field name="binding_view_types">form,list</field>
+    </record>
+  </data>
+</odoo>

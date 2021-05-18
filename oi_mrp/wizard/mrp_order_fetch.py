@@ -12,7 +12,7 @@ import threading
 _logger = logging.getLogger(__name__)
 
 
-class StockSchedulerCompute(models.TransientModel):
+class MRPOrders(models.TransientModel):
     _name = 'mrp.order.compute'
     _description = 'Run Fetch Manually'
 
@@ -32,6 +32,7 @@ class StockSchedulerCompute(models.TransientModel):
         r = requests.get(url, timeout=30)
         result = literal_eval(r.text)
         if 'data' in result:
+            _logger.info('order data %s', result)
             print(result['data'])
             for line in result['data']:
                 product_obj = self.env['product.product'].search([('id', '=', int(line['productId']))])

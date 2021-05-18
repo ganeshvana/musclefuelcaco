@@ -21,8 +21,6 @@ class StockSchedulerCompute(models.TransientModel):
     def get_data_from_musclefuel(self, date=False):
         base_url = self.env['ir.config_parameter'].sudo().get_param('musclefuel.api_url')
         jwt_token = "3726fa0d2ae0550da60b39a42dc4408c"
-        import pdb
-        pdb.set_trace()
         if not self.date:
             date = str(fields.Date.today())
         else:

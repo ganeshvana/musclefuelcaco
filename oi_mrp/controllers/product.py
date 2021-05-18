@@ -74,7 +74,7 @@ class CategoryApi(Controller):
                 }
 
                 category_obj = category.sudo().create(details)
-                response = {"product_id": category_id,
+                response = {"category_id": category_id,
                            "odoo_id": category_obj.id}
 
                 return {"session_valid": True,

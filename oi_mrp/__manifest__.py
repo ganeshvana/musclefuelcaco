@@ -18,6 +18,7 @@
         'data/api_user_data.xml',
         'data/api_url_data.xml',
         'data/ir_cron_data.xml',
+        'wizard/mrp_order_fetch_views.xml',
         'views/oi_api_tracker_views.xml',
         'views/product_category_view.xml',
         'views/res_users_views.xml',

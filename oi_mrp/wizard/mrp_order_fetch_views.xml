@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fetch_mrp_order_wizard" model="ir.ui.view">
+        <field name="name">Run Fetch Manually</field>
+        <field name="model">mrp.order.compute</field>
+        <field name="arch" type="xml">
+            <form string="Parameters">
+                <group>
+                    <field name="date"/>
+                </group>
+                <footer>
+                    <button name="get_data_from_musclefuel" string="Run Scheduler" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fetch_mrp_order" model="ir.actions.act_window">
+        <field name="name">Run Fetch Manually</field>
+        <field name="res_model">mrp.order.compute</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_action_fetch_mrp_order"
+              name="Run Fetch Manually"
+              action="action_fetch_mrp_order"
+              parent="mrp.mrp_planning_menu_root"
+              sequence="136"/>
+
+</odoo>

@@ -23,7 +23,7 @@ class ProductCategory(models.Model):
         if 'data' in result:
             print(result['data'])
             for line in result['data']:
-                product_obj = self.env['product.product'].search([('id', '=', int(line['productId']))])
+                product_obj = self.env['product.product'].search([('default_code', '=', line['productId'])])
                 if product_obj:
                     data = {
                         'product_id': product_obj.id,

@@ -10,6 +10,10 @@ from ast import literal_eval
 class ProductCategory(models.Model):
     _inherit = 'mrp.production'
 
+
+    total_carbs = fields.Char("Total Carbs")
+    total_protein = fields.Char("Total Proteins")
+
     def get_data_from_musclefuel(self, date=False):
         base_url = self.env['ir.config_parameter'].sudo().get_param('musclefuel.api_url')
         jwt_token = "3726fa0d2ae0550da60b39a42dc4408c"
@@ -36,7 +40,9 @@ class ProductCategory(models.Model):
                         'product_id': product_obj.id,
                         'date_planned_start': date,
                         'product_uom_id': product_obj.uom_id.id,
-                        'product_qty': int(line['cnt'])
+                        'product_qty': int(line['cnt']),
+                        'total_carbs': int(line['carbs_amount']),
+                        'total_protein': int(line['proteins_amount'])
                     }
                     MO = self.env['mrp.production'].sudo().create(data)
                     print(MO.name)

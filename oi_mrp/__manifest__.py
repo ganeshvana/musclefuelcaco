@@ -22,5 +22,6 @@
         'views/oi_api_tracker_views.xml',
         'views/product_category_view.xml',
         'views/res_users_views.xml',
+        'views/mrp_view.xml',
     ],
 }

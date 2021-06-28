@@ -47,7 +47,9 @@ class MRPOrders(models.TransientModel):
                         'product_id': product_obj.id,
                         'date_planned_start': date,
                         'product_uom_id': product_obj.uom_id.id,
-                        'product_qty': int(line['cnt'])
+                        'product_qty': int(line['cnt']),
+                        'total_carbs': str(line['carbs_amount']),
+                        'total_proteins': str(line['proteins_amount'])
                     }
                     MO = self.env['mrp.production'].sudo().create(data)
                     print(MO.name)
